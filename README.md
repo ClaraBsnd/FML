@@ -161,7 +161,9 @@ We analyzed the dataset using "info()" and "isna().sum()" and found it contains 
 
 - *Null Values Analysis*: We analyzed null values in the dataset, and identified that variables `koi_teq_err1` and `koi_teq_err2` had 100% missing values, so we decided to drop them. The variable `koi_score` had a high percentage of missing values (16%), but due to its strong correlation with the KOI disposition, filling the missing values with mean or mode could bias the model. Thus, we dropped this column as well. For other variables with less than 5% missing values, we filled them using appropriate statistics such as mode for `koi_tce_delivname` and median for other continuous variables, as the distributions had strong outliers positively skewing the mean.
 
-- *Correlation Analysis*: We examined the correlation between the remaining variables and identified pairs of variables with a strong correlation (|corr| > 0.85), mostly in the format of `koi_x_err1` and `koi_x_err2`. These variables represent the upper and lower bounds of the confidence interval for the measurement variable `koi_x`.
+- *Correlation Analysis*: We examined the correlation (figure below) between the remaining variables and identified pairs of variables with a strong correlation (|corr| > 0.85), mostly in the format of `koi_x_err1` and `koi_x_err2`. These variables represent the upper and lower bounds of the confidence interval for the measurement variable `koi_x`.
+![alt text](https://github.com/ClaraBsnd/FML/blob/main/corr.png?raw=true)
+
 
 #### 1.2. Data Engineering 
 
