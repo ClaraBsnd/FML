@@ -40,7 +40,7 @@ The code for the email classification can be found in the email_classification.p
 
 ### 1. Methodology
 
-#### 1.1. Data Exploration
+  #### 1.1. Data Exploration
 
 After analysing the dataset, we found that:
 - The date variable should be transformed into a date type so to be able to extract more specific information like the month or the day of the week the email was sent. 
