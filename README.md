@@ -38,9 +38,19 @@ https://www.kaggle.com/competitions/dsba-fm-centralesupelec-ml-course
 ## Code
 The code for the email classification can be found in the email_classification.py file. 
 
+As part of our data preprocessing and feature engineering, we created additional variables (such as data decomposition (`year`, `month`, etc.), insitution type, or label number), we encoded categorical variables (`mail_type`, `tld` and `org`) and numerical variables (based on the quantile we assigned the data points to). We also combined features, such as `character_count` and `image_count` as there are important characteristic of an email. Finally, we used **XGBoost** to select relevant features from the large number of variables after feature engineering, retaining only those with importance greater than 0.001 (around 10% of total features). 
+
+Then, we tested several models, among them KNN was set as our baseline model and XGBoost was the best performing one. 
+
+More information about our methodology and result can be found below. 
+
+<details>
+
+<summary> Detail on Methodology and Results </summary>
+
 ### 1. Methodology
 
-  #### 1.1. Data Exploration
+#### 1.1. Data Exploration
 
 After analysing the dataset, we found that:
 - The date variable should be transformed into a date type so to be able to extract more specific information like the month or the day of the week the email was sent. 
@@ -110,3 +120,4 @@ Our best performing model was XGBoost, initially achieving an accuracy of 0.605 
 | SVM | 0.5975  | 0.5744 |
 | RadomForest | 0.6026 | 0.5933 |
 
+</details>
