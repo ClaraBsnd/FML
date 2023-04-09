@@ -76,23 +76,37 @@ We transformed the `date` column into the appropriate format, datetime type.
 #### 2.1. Model Tuning
 
 After feature engineering, we explored different models to evaluate the performance. We splitted the training set with test size = 0.25. We then performed GridSearch to tune the parameters of our models. We evaluate the model by using repeated classified k fold cross-validation, with three repeats and 10 folds.
-'''python
+
+```python
+# Obtaining average performance of the model by using repeated classified k fold cross-validation, with three repeats and 10 folds.
 from numpy import mean
 from numpy import std
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import RepeatedStratifiedKFold
-
 cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
 n_scores = cross_val_score(xg_top, x_top_feat, y, scoring='accuracy', cv=cv, n_jobs=-1, error_score='raise')
 # report performance
 print('Accuracy: %.3f (%.3f)' % (mean(n_scores), std(n_scores)))
-'''
+```
 We tested : 
 - KNN
 - RandomForest
 - SVM
-- XGBoosting
+- XGBoost
 - Gradient Boosting
 
+We used KNN as our baseline model, initially achieving an accuracy of 0.4284 with n_neighbors = 3. Tuning n_neighbors to 30 improved accuracy to 0.5152, and using a Lasso model for feature selection further improved it to 0.5155. Cross-validation yielded an accuracy of 0.51993 on the Kaggle test set.
 
+Our best performing model was XGBoost, initially achieving an accuracy of 0.605 without tuning. After feature selection and parameter tuning using RandomizedSearchCV, we obtained an accuracy of 0.6102 on our own test set and 0.598 on the Kaggle test set. Addressing duplicates in the dataset also contributed to the score improvement.
+
+
+#### 2.2. Results
+
+| Model  | Train Set Score after tuning | Test Set Score |
+| ------------- | ------------- | ------------- |
+| KNN  | 0.5155 | 0.5199 |
+| XGBoost  | 0.6102 | 0.5983 |
+| XGBoost/Duplicates  | 0.8877 | 0.7031 |
+| SVM | 0.5975  | 0.5744 |
+| RadomForest | 0.6026 | 0.5933 |
 
