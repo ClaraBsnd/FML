@@ -156,3 +156,15 @@ This dataset has an extensive data dictionary, which can be accessed here. Highl
 #### 1.1. Data Exploration and Preprocessing
 
 We analyzed the dataset using "info()" and "isna().sum()" and found it contains 9564 entries with 48 independent variables and one dependent variable, `koi_deposition`. `koi_deposition` has three values: "confirmed", "candidate", and "false positive". The project objective is to create a model that categorizes "candidate" bodies as "confirmed" or "false positive". This restricts our dataset to only "confirmed" and "false positive" entries, leaving us with a smaller sample of 7316 entries for model training, as we exclude "candidate" entries.
+
+- *Data Type Analysis* : We examined the data types of the 48 independent variables. Four of them are of object type (`kepoi_name`, `kepler_name`, `koi_pdisposition`, `koi_tce_delivname`), and four are binary numerical (0 and 1), while the rest are continuous numerical variables. Since our modeling objective prioritizes numerical variables over categorical ones, we will need to transform or discard the object type variables for further processing. we decided to discard `kepoi_name`, `kepler_name`, `rowid` and `kepid` are to be considered as identification variables and therefore they do not bring any added value to the predictive capabilities of the model. We decided to also drop `koi_pdisposition` as it did not provide any additional information compared to `koi_diposition`.
+
+- *Null Values Analysis*: We analyzed null values in the dataset, and identified that variables `koi_teq_err1` and `koi_teq_err2` had 100% missing values, so we decided to drop them. The variable `koi_score` had a high percentage of missing values (16%), but due to its strong correlation with the KOI disposition, filling the missing values with mean or mode could bias the model. Thus, we dropped this column as well. For other variables with less than 5% missing values, we filled them using appropriate statistics such as mode for `koi_tce_delivname` and median for other continuous variables, as the distributions had strong outliers positively skewing the mean.
+
+- *Correlation Analysis*: We examined the correlation between the remaining variables and identified pairs of variables with a strong correlation (|corr| > 0.85), mostly in the format of `koi_x_err1` and `koi_x_err2`. These variables represent the upper and lower bounds of the confidence interval for the measurement variable `koi_x`.
+
+#### 1.2. Data Engineering 
+
+- *Encoding* : we inspected `koi_tce_delivname` and noticed that it was made up by three possible values (87% of the occurrences being "q1_q17_dr25_tce") and as a consequence we deemed appropriate to one-hot encode it.
+
+
