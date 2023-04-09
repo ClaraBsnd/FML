@@ -18,22 +18,27 @@ https://www.kaggle.com/competitions/dsba-fm-centralesupelec-ml-course
 - sample_submission.csv - a sample submission file in the correct format
 - skeleton_code.py - a skeleton python script to read train and test data and write output to the submission file.
 
-### Data fields
-- Id - the id of the email
-- date - date and time at which mail was received
-- org - the organisation of the sender
-- tld - top-level domain of the sender's organisation
-- ccs - number of people cc'd in the email
-- bcced - is the receiver bcc'd in the email
-- mail_type - the type of the mail body
-- images - number of images in the mail body
-- urls - number of urls in the mail body
-- salutations - is salutation used in the email?
-- designation - is designation of the sender mentioned in the email?
-- chars_in_subject - number of characters in the email's subject
-- chars_in_body - number of characters in the email's body
-- label - the label of the email
 
+### Data fields
+<details>
+  <summary> On data fields </summary>
+  
+  - Id - the id of the email
+  - date - date and time at which mail was received
+  - org - the organisation of the sender
+  - tld - top-level domain of the sender's organisation
+  - ccs - number of people cc'd in the email
+  - bcced - is the receiver bcc'd in the email
+  - mail_type - the type of the mail body
+  - images - number of images in the mail body
+  - urls - number of urls in the mail body
+  - salutations - is salutation used in the email?
+  - designation - is designation of the sender mentioned in the email?
+  - chars_in_subject - number of characters in the email's subject
+  - chars_in_body - number of characters in the email's body
+  - label - the label of the email
+  
+</details>
 
 ## Code
 The code for the email classification can be found in the email_classification.py file. 
@@ -121,3 +126,33 @@ Our best performing model was XGBoost, initially achieving an accuracy of 0.605 
 | RadomForest | 0.6026 | 0.5933 |
 
 </details>
+
+
+
+# Model selection of machine learning based exoplanet identification on the Kepler dataset
+
+The Kepler dataset contains data from NASA's Kepler Space Telescope, launched in 2009 to identify habitable exoplanets. This project uses machine learning classifiers to speed up exoplanet identification by performing model selection on Kaggle's Kepler Exoplanet Search Result dataset. Our approach contributes to the field by providing a machine learning-based solution and achieves comparable results to other contributors. Finally, we apply our model to predict exoplanet likelihood for "Candidate" entries in the dataset.
+
+## Context 
+Machine learning classifiers are widely used for exoplanet identification, especially in the context of the NASA Kepler mission. Kepler records astrological objects but cannot confirm exoplanet status, requiring time-consuming observations by other instruments. Machine learning classifiers offer a more efficient approach for large-scale exoplanet detection by analyzing transit patterns. However, limited available data for training and testing, with only around 7000 data points, may limit the generalizability of classification models. To assess accuracy, we use a test-train split, but confirmation by NASA is necessary to gauge the model's generalizability. Further information can be found in the link below: 
+https://www.kaggle.com/datasets/nasa/kepler-exoplanet-search-results
+
+## Data
+
+This dataset is a cumulative record of all observed Kepler "objects of interest" — basically, all of the approximately 10,000 exoplanet candidates Kepler has taken observations on.
+
+This dataset has an extensive data dictionary, which can be accessed here. Highlightable columns of note are:
+
+- `kepoi_name`: A KOI is a target identified by the Kepler Project that displays at least one transit-like sequence within Kepler time-series photometry that appears to be of astrophysical origin and initially consistent with a planetary transit hypothesis
+- `kepler_name` : [These names] are intended to clearly indicate a class of objects that have been confirmed or validated as planets—a step up from the planet candidate designation.
+- `koi_disposition` : The disposition in the literature towards this exoplanet candidate. One of `CANDIDATE`, `FALSE POSITIVE`, `NOT DISPOSITIONED` or `CONFIRMED`.
+- `koi_pdisposition` : The disposition Kepler data analysis has towards this exoplanet candidate. One of `FALSE POSITIVE`, `NOT DISPOSITIONED`, and `CANDIDATE`.
+- `koi_score` : A value between 0 and 1 that indicates the confidence in the KOI disposition. For `CANDIDATEs`, a higher value indicates more confidence in its disposition, while for `FALSE POSITIVEs`, a higher value indicates less confidence in that disposition.
+
+## Code
+
+### 1. Methodology
+
+#### 1.1. Data Exploration and Preprocessing
+
+We analyzed the dataset using "info()" and "isna().sum()" and found it contains 9564 entries with 48 independent variables and one dependent variable, `koi_deposition`. `koi_deposition` has three values: "confirmed", "candidate", and "false positive". The project objective is to create a model that categorizes "candidate" bodies as "confirmed" or "false positive". This restricts our dataset to only "confirmed" and "false positive" entries, leaving us with a smaller sample of 7316 entries for model training, as we exclude "candidate" entries.
