@@ -151,6 +151,12 @@ This dataset has an extensive data dictionary, which can be accessed here. Highl
 
 ## Code
 
+After data preprocessing and applying PCA and SVD, we trained various classification algorithms with hyperparameter tuning and cross-validation on both the PCA and SVD datasets. The Gradient Boosting algorithm applied to the PCA dataset achieved the highest accuracy of 0.992, which is in line with other academic papers. We noted that the high accuracy may be attributed to our sampling technique, as we excluded "candidate" entries from our dataset. Finally, we applied our classification tool to the previously omitted "candidate" elements and predicted that out of the 2200, 500 are likely to be exoplanets.
+
+<details>
+
+<summary> Detail on Methodology and Results </summary>
+
 ### 1. Methodology
 
 #### 1.1. Data Exploration and Preprocessing
@@ -211,3 +217,5 @@ Models we tested:
 
 
 The Gradient Boosting model applied to the PCA dataset achieved the highest accuracy of 99.22% according to the table of accuracies. While concerns about overfitting due to the limited sample size may arise, it's worth noting that other academic papers have reported similar high results. Additionally, the model was trained only on the "confirmed" and "false positive" occurrences, which may have distinct traits, making them easier to distinguish. Therefore, the accuracy value should not be a major concern regarding the model's validity.
+  
+</details>
