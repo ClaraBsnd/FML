@@ -163,11 +163,51 @@ We analyzed the dataset using "info()" and "isna().sum()" and found it contains 
 
 - *Correlation Analysis*: We examined the correlation (figure below) between the remaining variables and identified pairs of variables with a strong correlation (|corr| > 0.85), mostly in the format of `koi_x_err1` and `koi_x_err2`. These variables represent the upper and lower bounds of the confidence interval for the measurement variable `koi_x`.
 
-<img src="(https://github.com/ClaraBsnd/FML/blob/main/Project/corr.png?raw=true" width="48">
+<p align="center"><img src="https://github.com/ClaraBsnd/FML/blob/b0379aa4d053be83344a4c4039e3164e19a3421a/Project/corr.png" align="center" width=30%></p>
 
 
 #### 1.2. Data Engineering 
 
 - *Encoding* : we inspected `koi_tce_delivname` and noticed that it was made up by three possible values (87% of the occurrences being "q1_q17_dr25_tce") and as a consequence we deemed appropriate to one-hot encode it.
 
+- *Feature Combination*: To summarize `koi_x_err1` and `koi_x_err2`, we decided to create a new one (named `x_interval`) representing each measurement’s confidence interval (|`koi_x_err1`| + |`koi_x_err2`|). To have a more proper idea of the accuracy of the measurement we deemed appropriate to generate an additional set of variables (named `x_relative`) recording the ratio between the confidence interval (`x_interval`) and the measurement (`koi_x`).
 
+- *Dimensionality Reduction*: Due to the large number of variables in the Kepler dataset, we used dimensionality reduction techniques (e.g. PCA, SVD) to mitigate overfitting and improve analysis efficiency. Results from both techniques were compared to determine the best approach in terms of accuracy.
+    - *PCA*: PCA was applied to identify the variables with the highest explanatory power, based on their variance. The cumulative variance plot revealed that the top 26 features explain nearly 95% of the data. Consequently, our initial training dataset was limited to these 26 features.
+    - *SVD*: Singular Value Decomposition (SVD) was used to determine the optimal number of components for the models. Boxplots of model performance showed that after the first 21 components, the accuracy rates did not significantly increase. Therefore, 21 components were selected for training the models, as discussed in the Evaluation section.
+
+
+### 2. Model Tuning and Comparison
+
+#### 2.1. Model Tuning
+
+In this section, we discuss the training process, model optimization, and performance evaluation of 10 different machine learning models on 2 datasets: one with PCA-transformed features and the other with SVD-transformed features. Hyperparameter tuning was performed using random search grid, which involves sampling combinations of hyperparameters and evaluating model performance on a validation set. Performance evaluation was conducted using 10-fold cross-validation, where the data was divided into 10 folds for training and evaluation. We measured accuracy as the performance metric, both before and after parameter tuning, with the goal of identifying the best model and hyperparameter settings that maximize accuracy while mitigating overfitting risks.
+
+Models we tested:
+- Classification Tree
+- RandomForest
+- Naive Bayes - GaussianNB
+- Multilayer perceptron
+- Gradient Boosting
+- XGBoost
+- KNN
+- Light GBM
+- CatBoost
+
+#### 2.2. Evaluations and Results
+
+
+| Model | Whole Dataset Accuracy | PCA Accuracy | SVD Accuracy |
+| -------------------- | ---------------------- | ------------ | ------------ |
+| Classification Tree | 0.9559 | 0.9529 | 0.8927 |
+| RandomForest | 0.9872 | 0.9874 | 0.9335 |
+| Naive Bayes | 0.5698 | 0.5472 | 0.5648 |
+| Multilayer Perceptron| 0.8677 | 0.9140 | 0.8415 |
+| Gradient Boosting | 0.9920 | 0.9922 | 0.9400 |
+| XGBoost | 0.9913 | 0.9902 | 0.9370 |
+| KNN | 0.8562 | 0.8553 | 0.8633 |
+| Light GBM | 0.9909 | 0.9909 | 0.9408 |
+| CatBoost | 0.9920 | 0.9913 | 0.9428 |
+
+
+The Gradient Boosting model applied to the PCA dataset achieved the highest accuracy of 99.22% according to the table of accuracies. While concerns about overfitting due to the limited sample size may arise, it's worth noting that other academic papers have reported similar high results. Additionally, the model was trained only on the "confirmed" and "false positive" occurrences, which may have distinct traits, making them easier to distinguish. Therefore, the accuracy value should not be a major concern regarding the model's validity.
